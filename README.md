@@ -1,3 +1,10 @@
+## raffle-draw
+
+A lucky-draw service which allows users to get Lucky Draw Raffle tickets and use one lucky draw raffle ticket to participate in a lucky draw game.
+
+- Node version `v10.19.0`
+- Npm version `6.14.3`
+
 ## Installation
 
 1. Install [Node.js](https://nodejs.org/)
