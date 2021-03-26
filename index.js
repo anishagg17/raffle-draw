@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json({ extended: false }));
 
 app.use('/api/user', require('./api/user'));
+app.use('/api/event', require('./api/event'));
 app.get('/', (req, res) => {
   res.send('working');
 });

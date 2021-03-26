@@ -6,7 +6,7 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  on: {
+  start_date: {
     type: Date,
     required: true
   },
@@ -24,6 +24,8 @@ const EventSchema = new mongoose.Schema({
     default: Date.now
   },
 });
+
+EventSchema.index({ start_date: -1 });
 
 const Event = mongoose.model('Event', EventSchema);
 module.exports =  Event;
