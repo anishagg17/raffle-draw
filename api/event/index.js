@@ -8,7 +8,6 @@ router.get('/', async (req, res) => {
     const events = await Event.find({status:'active'}).sort({ start_date: 1 }).limit(10);
     res.json(events);
   } catch (err) {
-    console.error(err);
     res.status(401).json({
       msg: 'Server Error'
     });

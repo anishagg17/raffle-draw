@@ -9,6 +9,7 @@ app.use(express.json({ extended: false }));
 
 app.use('/api/user', require('./api/user'));
 app.use('/api/event', require('./api/event'));
+app.use('/api/reward', require('./api/reward'));
 app.get('/', (req, res) => {
   res.send('working');
 });
