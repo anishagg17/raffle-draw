@@ -1,52 +1,54 @@
-const express = require('express');
+const express = require("express");
 
-const Participant = require('../../models/participant');
-const User = require('../../models/user');
-const middleware = require('../user/middleware');
+const Participant = require("../../models/participant");
+const User = require("../../models/user");
+const middleware = require("../user/middleware");
 
 const router = express.Router();
 
 //Get participants for an Event
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const participants = await Participant.find({event_id:req.params.id});
+    const participants = await Participant.find({ event_id: req.params.id });
 
-    if(!participants) return res.status(401).json({
-      msg: 'No participants found'
-    });
+    if (!participants)
+      return res.status(401).json({
+        msg: "No participants found",
+      });
 
     return res.json(participants);
   } catch (err) {
     return res.status(401).json({
-      msg: 'Server Error'
+      msg: "Server Error",
     });
   }
 });
 
 //Register as an participant
-router.post('/:id', middleware, async (req, res) => {
+router.post("/:id", middleware, async (req, res) => {
   try {
     const participant = { user_id: req.user.id, event_id: req.params.id };
 
-    if(!participant.user_id) { 
+    if (!participant.user_id) {
       return res.status(401).json({
-        msg: 'User not logged In'
+        msg: "User not logged In",
       });
-    }
-    else {
-      const user = await User.findById(req.user.id).select('-password');
+    } else {
+      const user = await User.findById(req.user.id).select("-password");
 
-      if(user.tickets == 0) return res.status(401).json({
-        msg: 'User does not have enough tickets'
-      });
+      if (user.tickets == 0)
+        return res.status(401).json({
+          msg: "User does not have enough tickets",
+        });
 
       const tickets = user.tickets - 1;
-      await User.findByIdAndUpdate(req.user.id, {tickets});
+      await User.findByIdAndUpdate(req.user.id, { tickets });
     }
 
-    if(!participant.event_id)  return res.status(401).json({
-      msg: 'Invalid event ID'
-    });
+    if (!participant.event_id)
+      return res.status(401).json({
+        msg: "Invalid event ID",
+      });
 
     // Creating the participant object
     const result = await Participant.create(participant);

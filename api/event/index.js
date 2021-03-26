@@ -1,10 +1,12 @@
 const express = require('express');
 const Event = require('../../models/event');
-const router = express.Router();
+
+const router = express.Router();  // setup the router for this controller
 
 //Get active Events
 router.get('/', async (req, res) => {
   try {
+    // query latest 10 active events from the DB
     const events = await Event.find({status:'active'}).sort({ start_date: 1 }).limit(10);
     return res.json(events);
   } catch (err) {
@@ -17,6 +19,7 @@ router.get('/', async (req, res) => {
 //Register a Event
 router.post('/', async (req, res) => {
   try {
+    // set the time(hour, minute, sec) field of the `start_date` 
     let start_date = new Date(req.body.start_date);
     start_date.setHours(8,0,0,0);
 
@@ -34,6 +37,7 @@ router.post('/', async (req, res) => {
 //List all the winners of all the events in the last one week.
 router.get('/winners', async (req, res) => {
   try {
+    // set the offset date, i.e, 7 days before the current date
     const startDate = new Date();
     startDate.setDate(startDate.getDate()-7);
 

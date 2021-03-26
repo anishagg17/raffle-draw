@@ -1,25 +1,25 @@
-const express = require('express');
-const User = require('../../models/user');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const User = require("../../models/user");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
-const middleware = require('./middleware');
+const middleware = require("./middleware");
 
 //Get currently authenticated User
-router.get('/', middleware, async (req, res) => {
+router.get("/", middleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select("-password");
     return res.json(user);
   } catch (err) {
     console.error(err);
     return res.status(401).json({
-      msg: 'error in user-auth api'
+      msg: "error in user-auth api",
     });
   }
 });
 
 //Register a User
-router.post('/signUp', async (req, res) => {
+router.post("/signUp", async (req, res) => {
   try {
     // hashing the password
     const password = await bcrypt.hash(req.body.password, 10);
@@ -31,8 +31,8 @@ router.post('/signUp', async (req, res) => {
     jwt.sign(
       {
         user: {
-          id: result._id
-        }
+          id: result._id,
+        },
       },
       process.env.JWT_SECRET,
       { expiresIn: 3600000 },
@@ -40,7 +40,7 @@ router.post('/signUp', async (req, res) => {
         if (err) throw err;
         console.log(token);
         return res.json({ token });
-      }
+      },
     );
   } catch (err) {
     return res.status(400).end(err.errmsg);
@@ -48,51 +48,51 @@ router.post('/signUp', async (req, res) => {
 });
 
 //Authenticate User
-router.post('/logIn', async (req, res) => {
+router.post("/logIn", async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ errmsg: 'Invalid Credentials' });
+      return res.status(400).json({ errmsg: "Invalid Credentials" });
     }
     const valid = await bcrypt.compare(password, user.password);
 
     if (!valid) {
-      return res.status(400).json({ errmsg: 'Invalid Credentials' });
+      return res.status(400).json({ errmsg: "Invalid Credentials" });
     }
 
     jwt.sign(
       {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       },
       process.env.JWT_SECRET,
       { expiresIn: 3600000 },
       (err, token) => {
         if (err) throw err;
         return res.json({ token });
-      }
+      },
     );
   } catch (err) {
-    return res.status(400).end('error in user-login api');
+    return res.status(400).end("error in user-login api");
   }
 });
 
 // Allow user to get a raffle ticket
-router.post('/add_ticket', middleware, async (req, res) => {
+router.post("/add_ticket", middleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select("-password");
     const tickets = user.tickets + 1;
-    await User.findByIdAndUpdate(req.user.id, {tickets});
+    await User.findByIdAndUpdate(req.user.id, { tickets });
 
-    return res.json({...user._doc, tickets});
+    return res.json({ ...user._doc, tickets });
   } catch (err) {
     console.error(err);
     return res.status(401).json({
-      msg: 'Server Erorr'
+      msg: "Server Erorr",
     });
   }
 });

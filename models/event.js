@@ -1,31 +1,31 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const EventSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   start_date: {
     type: Date,
-    required: true
+    required: true,
   },
-  status :{
+  status: {
     type: String,
-    enum : ['active','closed'],
-    default: 'active'
+    enum: ["active", "closed"],
+    default: "active",
   },
   winner: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: "user",
   },
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
 });
 
 EventSchema.index({ start_date: -1 });
 
-const Event = mongoose.model('Event', EventSchema);
-module.exports =  Event;
+const Event = mongoose.model("Event", EventSchema);
+module.exports = Event;
