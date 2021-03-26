@@ -4,6 +4,7 @@ A lucky-draw service which allows users to get Lucky Draw Raffle tickets and use
 
 - Node version `v10.19.0`
 - Npm version `6.14.3`
+- DB `mongoDB`
 
 ## Installation
 
