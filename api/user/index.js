@@ -9,10 +9,10 @@ const middleware = require('./middleware');
 router.get('/', middleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
+    return res.json(user);
   } catch (err) {
     console.error(err);
-    res.status(401).json({
+    return res.status(401).json({
       msg: 'error in user-auth api'
     });
   }
@@ -27,7 +27,6 @@ router.post('/signUp', async (req, res) => {
     // Creating the User object
     const result = await User.create(newUser);
 
-
     // returning the token
     jwt.sign(
       {
@@ -40,11 +39,11 @@ router.post('/signUp', async (req, res) => {
       (err, token) => {
         if (err) throw err;
         console.log(token);
-        res.json({ token });
+        return res.json({ token });
       }
     );
   } catch (err) {
-    res.status(400).end(err.errmsg);
+    return res.status(400).end(err.errmsg);
   }
 });
 
@@ -74,25 +73,25 @@ router.post('/logIn', async (req, res) => {
       { expiresIn: 3600000 },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        return res.json({ token });
       }
     );
   } catch (err) {
-    res.status(400).end('error in user-login api');
+    return res.status(400).end('error in user-login api');
   }
 });
 
 // Allow user to get a raffle ticket
 router.post('/add_ticket', middleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).select('-password');
     const tickets = user.tickets + 1;
-    const updatedUser = await User.findByIdAndUpdate(req.user.id, {tickets});
+    await User.findByIdAndUpdate(req.user.id, {tickets});
 
-    res.json(updatedUser);
+    return res.json({...user._doc, tickets});
   } catch (err) {
     console.error(err);
-    res.status(401).json({
+    return res.status(401).json({
       msg: 'Server Erorr'
     });
   }

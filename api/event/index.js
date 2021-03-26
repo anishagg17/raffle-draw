@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const events = await Event.find({status:'active'}).sort({ start_date: 1 }).limit(10);
-    res.json(events);
+    return res.json(events);
   } catch (err) {
     res.status(401).json({
       msg: 'Server Error'

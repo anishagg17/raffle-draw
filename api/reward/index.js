@@ -27,9 +27,9 @@ router.post('/:id', async (req, res) => {
     const result = await Reward.create(reward);
 
     // returning the new reward
-    res.json({ result });
+    return res.json({ result });
   } catch (err) {
-    res.status(400).end(err.errmsg);
+    return res.status(400).end(err.errmsg);
   }
 });
 
