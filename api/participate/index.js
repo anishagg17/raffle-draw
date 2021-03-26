@@ -9,6 +9,7 @@ const router = express.Router();
 //Get participants for an Event
 router.get("/:id", async (req, res) => {
   try {
+    // here `id` param is navigates to the event_id
     const participants = await Participant.find({ event_id: req.params.id });
 
     if (!participants)
@@ -27,6 +28,8 @@ router.get("/:id", async (req, res) => {
 //Register as an participant
 router.post("/:id", middleware, async (req, res) => {
   try {
+    // here `id` param is navigates to the event_id
+    // `req.user.id` is added by the `middleware` which required the `auth-token`.
     const participant = { user_id: req.user.id, event_id: req.params.id };
 
     if (!participant.user_id) {
