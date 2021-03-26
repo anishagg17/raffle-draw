@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+// this middleware is used to procted routes that require authentication
 const middleware = function (req, res, next) {
   const token = req.header("x-auth-token");
   if (!token) {

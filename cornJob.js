@@ -12,6 +12,7 @@ const cornFunction = () => {
     lowerLimit = lowerLimit.setMinutes(lowerLimit.getMinutes() - 1);
     upperLimit = upperLimit.setMinutes(upperLimit.getMinutes() + 1);
 
+    // find the suitable event within the current time-range
     let event = await Event.findOne({
       status: "active",
       start_date: {
@@ -23,8 +24,10 @@ const cornFunction = () => {
     if (event) {
       const participants = await Participant.find({ event_id: event.id });
       if (participants.length > 0) {
+        // pick a random index as a winner
         const random_idx = Math.floor(Math.random() * participants.length);
 
+        // update the event state as `closed` in the DB and mark its winner.
         event = await Event.findByIdAndUpdate(event.id, {
           status: "closed",
           winner: participants[random_idx].user_id,
