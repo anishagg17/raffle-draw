@@ -7,7 +7,8 @@
 
 ## Development
 
--  Create a `.env` file similar to `demo.env` with `Mongdb_URI` and `Json_web_token`.
+-  Create a `.env` file similar to `demo.env` with `MONGO_URL` and `JWT_SECRET`.
 -  Run `npm start`
+-  Observe the server running at `http://localhost:5000/`
 -  Link to the `postman-collection` https://www.getpostman.com/collections/2301a3ef4667075eda83
 
