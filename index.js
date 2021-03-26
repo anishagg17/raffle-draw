@@ -1,16 +1,21 @@
 const express = require("express");
 
+// acquire the necessary environment variables
 require("dotenv").config({ path: ".env" });
 const connectDB = require("./db");
 const cornFunction = require("./cornJob");
 
+// establish connection to the DB instance
 connectDB();
 
+// create express server
 const app = express();
 app.use(express.json({ extended: false }));
 
+// run the corn-job
 cornFunction();
 
+// Based upon different paths, I added different routers
 app.use("/api/user", require("./api/user"));
 app.use("/api/event", require("./api/event"));
 app.use("/api/reward", require("./api/reward"));

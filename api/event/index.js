@@ -41,6 +41,7 @@ router.get('/winners', async (req, res) => {
     const startDate = new Date();
     startDate.setDate(startDate.getDate()-7);
 
+    // query the DB date, i.e, 7 days before the current date
     let events = await Event.find({
       status:'closed', 
       start_date:{ $gte: startDate },
