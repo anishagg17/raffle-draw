@@ -37,6 +37,7 @@ router.post("/:id", middleware, async (req, res) => {
         msg: "User not logged In",
       });
     } else {
+      // `-password` selection is made to ommit the password field
       const user = await User.findById(req.user.id).select("-password");
 
       if (user.tickets == 0)
