@@ -82,5 +82,20 @@ router.post('/logIn', async (req, res) => {
   }
 });
 
+// Allow user to get a raffle ticket
+router.post('/add_ticket', middleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const tickets = user.tickets + 1;
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, {tickets});
+
+    res.json(updatedUser);
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({
+      msg: 'Server Erorr'
+    });
+  }
+});
 
 module.exports = router;
