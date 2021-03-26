@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Describe the Schema of a Participant
+// event_id, user_id are `foreign_key`.
 const ParticipantSchema = new mongoose.Schema({
   user_id: {
     type: Schema.Types.ObjectId,

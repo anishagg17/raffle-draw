@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Describe the Schema of an Event
+// winner is a `foreign_key`.
 const EventSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -25,6 +27,7 @@ const EventSchema = new mongoose.Schema({
   },
 });
 
+// create a index based upon start_date, as we are quering based upon start_date in several requests
 EventSchema.index({ start_date: -1 });
 
 const Event = mongoose.model("Event", EventSchema);

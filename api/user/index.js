@@ -8,6 +8,7 @@ const middleware = require("./middleware");
 //Get currently authenticated User
 router.get("/", middleware, async (req, res) => {
   try {
+    // `-password` selection is made to ommit the password field
     const user = await User.findById(req.user.id).select("-password");
     return res.json(user);
   } catch (err) {
@@ -84,6 +85,7 @@ router.post("/logIn", async (req, res) => {
 // Allow user to get a raffle ticket
 router.post("/add_ticket", middleware, async (req, res) => {
   try {
+    // `-password` selection is made to ommit the password field
     const user = await User.findById(req.user.id).select("-password");
     const tickets = user.tickets + 1;
     await User.findByIdAndUpdate(req.user.id, { tickets });
